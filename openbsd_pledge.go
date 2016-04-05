@@ -1,5 +1,5 @@
 // +build openbsd
-// +build 386,amd64,arm
+// +build 386 amd64 arm
 
 package extrasys
 
@@ -21,8 +21,8 @@ func Pledge(promises string, paths []string) (err error) {
 	if err != nil {
 		return
 	}
-	_, _, e := syscall.Syscall(SYS_PLEDGE, uintptr(unsafe.Pointer(promisesp)), uintptr(unsafe.Pointer(pathsp)), 0)
+	_, _, e := syscall.Syscall(SYS_PLEDGE, uintptr(unsafe.Pointer(promisesp)), uintptr(unsafe.Pointer(&pathsp[0])), 0)
 	use(unsafe.Pointer(promisesp))
-	use(unsafe.Pointer(&paths[0]))
+	use(unsafe.Pointer(&pathsp[0]))
 	return syscall.Errno(e)
 }
