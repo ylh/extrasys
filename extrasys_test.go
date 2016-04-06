@@ -29,9 +29,9 @@ func init() {
 	flag.StringVar(&procName, optName, "", "internal use only")
 }
 
-// TestCmd generates a proper command that, when executed, runs the test
+// testCmd generates a proper command that, when executed, runs the test
 // corresponding to the given key.
-func TestCmd(procName string) (*exec.Cmd, error) {
+func testCmd(procName string) (*exec.Cmd, error) {
 	exe, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		return nil, err
