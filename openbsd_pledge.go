@@ -21,8 +21,7 @@ func Pledge(promises string, paths []string) (err error) {
 	promisesp, pathsp := unsafe.Pointer(promisesp_), unsafe.Pointer(nil)
 	if paths != nil {
 		var pathsp_ []*byte
-		pathsp_, err = syscall.SlicePtrFromStrings(paths)
-		if err != nil {
+		if pathsp_, err = syscall.SlicePtrFromStrings(paths); err != nil {
 			return
 		}
 		pathsp = unsafe.Pointer(&pathsp_[0])
