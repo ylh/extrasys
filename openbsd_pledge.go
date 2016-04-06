@@ -29,5 +29,5 @@ func Pledge(promises string, paths []string) (err error) {
 	_, _, e := syscall.Syscall(SYS_PLEDGE, uintptr(promisesp), 0, 0)
 	use(promisesp)
 	use(pathsp)
-	return errors.New("syscall: " + syscall.Errno(e).Error())
+	return e
 }
