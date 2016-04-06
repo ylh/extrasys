@@ -4,6 +4,7 @@
 package extrasys
 
 import (
+	"errors"
 	"syscall"
 	"unsafe"
 )
@@ -13,16 +14,21 @@ const (
 )
 
 func Pledge(promises string, paths []string) (err error) {
-	promisesp, err := syscall.BytePtrFromString(promises)
+	promisesp_, err := syscall.BytePtrFromString(promises)
 	if err != nil {
 		return
 	}
-	pathsp, err := syscall.SlicePtrFromStrings(paths)
-	if err != nil {
-		return
+	promisesp, pathsp := unsafe.Pointer(promisesp_), unsafe.Pointer(nil)
+	if paths != nil {
+		var pathsp_ []*byte
+		pathsp_, err = syscall.SlicePtrFromStrings(paths)
+		if err != nil {
+			return
+		}
+		pathsp = unsafe.Pointer(&pathsp_[0])
 	}
-	_, _, e := syscall.Syscall(SYS_PLEDGE, uintptr(unsafe.Pointer(promisesp)), uintptr(unsafe.Pointer(&pathsp[0])), 0)
-	use(unsafe.Pointer(promisesp))
-	use(unsafe.Pointer(&pathsp[0]))
-	return syscall.Errno(e)
+	_, _, e := syscall.Syscall(SYS_PLEDGE, uintptr(promisesp), 0, 0)
+	use(promisesp)
+	use(pathsp)
+	return errors.New("syscall: " + syscall.Errno(e).Error())
 }
