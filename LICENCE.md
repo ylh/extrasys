@@ -1,8 +1,9 @@
 # Licence
 
-This library is hereby released to the public domain. In the event that your
-country's copyright laws do not recognize the public domain, this library is also
-made available under the terms of the following two licences:
+This library is hereby released to the public domain. If preferred, or in the 
+event that your country's copyright laws do not recognize the public domain,
+this library is also made available under the terms of the following two 
+licences:
 
 ## MIT Licence
 Copyright (c) 2016 Yestin Harrison
